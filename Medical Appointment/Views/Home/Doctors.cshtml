@@ -1,0 +1,147 @@
+﻿@model List<Doctor>
+
+
+
+<section class="container  my-5 h-100 w-100 ">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bolder mb-0"><span class="text-gradient d-inline">Doctors</span></h1>
+    </div>
+
+    @* filter section *@
+    <section>
+
+        <!-- Toggle Button -->
+        <div class="text-end mb-3">
+            <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#filterPanel" aria-expanded="false" aria-controls="filterPanel">
+                <i class="bi bi-funnel"></i> Filter Doctors
+            </button>
+        </div>
+
+        <!-- Collapsible Filter Panel -->
+        <div class="collapse" id="filterPanel">
+            <div class="card card-body shadow-sm border rounded mb-4">
+                <form>
+                    <!-- adjust action as needed -->
+                    <div class="row g-3 align-items-end">
+
+                        <!-- Doctor Name -->
+                        <div class="col-md-6">
+                            <label for="DoctorName" class="form-label">Doctor Name</label>
+                            <input type="text" class="form-control" id="DoctorName" name="DoctorName" placeholder="Enter name" value="@ViewBag.DoctorName">
+                        </div>
+
+                        <!-- Specialization -->
+                        <div class="col-md-6">
+                            <label for="Specialization" class="form-label">Specialization</label>
+                            <select class="form-select" id="Specialization" name="Specialization">
+                                <option  value="">-- All Specializations --</option>
+                                @foreach (var item in  ViewBag.droplist)
+                                {
+                                    if (item == ViewBag.Specialization)
+                                    {
+                                        <option selected value="@item">@item</option>
+                                    }
+                                    else
+                                    {
+                                    <option  value="@item">@item</option>
+                                    }
+                                   
+                                }
+
+                                <!-- Add more as needed -->
+                            </select>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="col-12 text-end">
+                            <button type="submit" class="btn btn-primary me-2">
+                                <i class="bi bi-search"></i> Apply Filters
+                            </button>
+                         
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="row my-2 ">
+        @if (Model.Any())
+        {
+            @foreach(var item in Model)
+            {
+                <div class="col-md-4 my-3">
+                    <div class="card shadow-lg border-0 h-100 text-center">
+                        <img src="~/images/@item.Img" class="card-img-top w-100 img-fluid rounded-top object-fit-contain" alt="Doctor Image" style="height:300px">
+
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">@item.Name</h5>
+                            <p class="card-text text-muted">@item.Specialization</p>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-0">
+
+                            <a href="/home/AddApointment?DoctorId=@item.Id&DoctorName=@item.Name" class="btn btn-primary w-75">Book Appointment</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <h1 class="display-1 text-center">No Doctors ..</h1>
+        }
+
+       
+       
+    </div>
+
+    <nav aria-label="Doctor list pagination" class="mt-5">
+        <ul class="pagination justify-content-center small gap-1">
+
+     
+
+           
+            @if (ViewBag.currentpage!=1)
+            {
+                       <li class="page-item ">
+                <a class="page-link px-3 border-0 bg-light text-muted rounded" href="/home/doctors?page=@(ViewBag.currentpage-1)&DoctorName=@ViewBag.DoctorName&Specialization=@ViewBag.Specialization" tabindex="-1" aria-disabled="true">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            </li>
+            }
+
+
+            @for (int i = 1; i <= ViewBag.totalPages; i++)
+            {
+                if (ViewBag.currentpage==i)
+                {
+                    <li class="page-item active">
+                        <a class="page-link px-3 border-0 bg-primary text-white rounded" href="/home/doctors?page=@i&DoctorName=@ViewBag.DoctorName&Specialization=@ViewBag.Specialization">@i</a>
+                    </li>
+
+                }
+                else
+                {
+                     <li class="page-item">
+                <a class="page-link px-3 border-0 bg-white text-dark rounded" href="/home/doctors?page=@i&DoctorName=@ViewBag.DoctorName&Specialization=@ViewBag.Specialization">@i</a>
+            </li>
+                }
+            }
+
+            @if(ViewBag.currentpage!=ViewBag.totalPages){
+                <li class="page-item">
+                <a class="page-link px-3 border-0 bg-light text-dark rounded" href="/home/doctors?page=@(ViewBag.currentpage+1)&DoctorName=@ViewBag.DoctorName&Specialization=@ViewBag.Specialization">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+            }
+
+
+            
+
+        </ul>
+    </nav>
+
+</section>

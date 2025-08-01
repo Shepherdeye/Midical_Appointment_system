@@ -1,0 +1,97 @@
+﻿<div class="text-center my-5">
+    <h1 class="display-5 fw-bolder mb-0"><span class="text-gradient d-inline">Complete Appointment with @ViewBag.Doctorname</span></h1>
+</div>
+
+
+<form method="post" action="/Home/SaveAppointment" class="p-4 rounded-4 shadow-sm bg-light">
+    <h4 class="mb-4 text-primary fw-semibold">Book Appointment</h4>
+    <div class="row g-3">
+
+        <input type="hidden" name="DoctorId" value="@ViewBag.DoctorId" />
+
+        <!-- Patient Name -->
+        <div class="col-md-6">
+            <label class="form-label">Your Name</label>
+            <input type="text" name="PatientName" class="form-control" placeholder="Enter Patient name" required />
+        </div>
+
+        <!-- Date -->
+        <div class="col-md-6">
+            <label class="form-label">Date</label>
+            <input id="dateInput" type="date" name="Date" class="form-control" required />
+        </div>
+
+        <!-- Time -->
+        <div class="col-md-6">
+            <label class="form-label">Time</label>
+            <select class="form-select" name="Time" required>
+                <option disabled selected>-- Select Time --</option>
+                @{
+                    var start = new TimeSpan(8, 0, 0);
+                    var end = new TimeSpan(17, 0, 0);
+                    for (var time = start; time <= end; time = time.Add(TimeSpan.FromMinutes(30)))
+                    {
+                        var formatted = time.ToString(@"hh\:mm");
+                        <option value="@formatted">@formatted</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <!-- Submit -->
+        <div class="col-12 text-end mt-3">
+            <button type="submit" class="btn btn-primary px-4">Confirm Booking</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        @if (TempData["Success"] != null)
+        {
+                <text>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: '@TempData["Success"]',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = '/home/ViewApointment'; 
+                    });
+                </text>
+        }
+        else if (TempData["Error"] != null)
+        {
+                <text>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: '@TempData["Error"]',
+                        timer: 2500,
+                        showConfirmButton: false
+                    });
+                </text>
+        }
+    </script>
+}
+
+
+<script>
+    const dateInput = document.getElementById("dateInput");
+
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.min = today;
+
+    dateInput.addEventListener("change", function () {
+        const selected = new Date(this.value);
+        const day = selected.getDay(); // 0 = Sun, 5 = Fri, 6 = Sat
+
+        if (day === 5 || day === 6) {
+            alert("Appointments only available from Sunday to Thursday.");
+            this.value = "";
+        }
+    });
+</script>
+
+
