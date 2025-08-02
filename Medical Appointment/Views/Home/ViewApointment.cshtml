@@ -1,4 +1,4 @@
-﻿@model List<Appointment>
+@model List<Appointment>
 
 <div class="container mt-4">
     <div class="card shadow-sm rounded-4">
@@ -7,31 +7,40 @@
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover table-striped mb-0 align-middle">
-                    <thead class="table-light">
-                        <tr>
-                          
-                            <th>Doctor Name</th>
-                            <th>Specialization</th>
-                            <th>Patient Name</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
+                @if (Model.Any())
+                {
+                    <table class="table table-hover table-striped mb-0 align-middle">
+                        <thead class="table-light">
                             <tr>
-                                
-                                <td>@item.Doctor?.Name</td>
-                                <td>@item.Doctor?.Specialization</td>
-                                <td>@item.PatientName</td>
-                                <td>@item.Date.ToString("yyyy-MM-dd")</td>
-                                <td>@item.Time.ToString(@"hh\:mm")</td>
+
+                                <th>Doctor Name</th>
+                                <th>Specialization</th>
+                                <th>Patient Name</th>
+                                <th>Date</th>
+                                <th>Time</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <td>@item.Doctor?.Name</td>
+                                    <td>@item.Doctor?.Specialization</td>
+                                    <td>@item.PatientName</td>
+                                    <td>@item.Date.ToString("yyyy-MM-dd")</td>
+                                    <td>@item.Time.ToString(@"hh\:mm")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }else
+                {
+                    <div class="alert alert-info mb-0 text-center">
+                        No appointments found.
+                    </div>
+
+                }
             </div>
         </div>
     </div>
