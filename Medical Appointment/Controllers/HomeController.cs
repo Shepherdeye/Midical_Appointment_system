@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 
 using Medical_Appointment.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -61,7 +61,7 @@ namespace Medical_Appointment.Controllers
         }
 
 
-        public IActionResult AddApointment(int? DoctorId,string? DoctorName="",string? PatientName="",string? Date="",string? Time="")
+        public IActionResult AddApointment(int? DoctorId,string? DoctorName="")
         {
             if (DoctorName is not null)
                 ViewBag.Doctorname = DoctorName;
